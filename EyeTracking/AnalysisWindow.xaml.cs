@@ -29,12 +29,15 @@ namespace EyeTracking
             bStart = false
         };
 
+        CameraServer server = new CameraServer("", 8456);
+
         public AnalysisWindow()
         {
             InitializeComponent();
 
             grid_Control.DataContext = data;
 
+            server.BeginAccepting();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
