@@ -24,5 +24,25 @@ namespace EyeTracking
         {
             InitializeComponent();
         }
+
+        private void btn_Test_Click(object sender, RoutedEventArgs e)
+        {
+            AnalysisWindow winAnalysis = new AnalysisWindow();
+            //창을 숨김
+            this.Visibility = Visibility.Collapsed;
+            winAnalysis.ShowDialog();
+            //창을 다시 표시
+            this.Visibility = Visibility.Visible;
+        }
+
+        private void btn_Play_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_Quit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

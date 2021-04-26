@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EyeTracking"
         mc:Ignorable="d"
+        WindowStyle="None"
+        WindowState="Maximized"
+        ResizeMode="NoResize"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Button x:Name="btn_Test" Content="테스트" HorizontalAlignment="Left" Height="100" Margin="10,50" VerticalAlignment="Top" Width="100" Click="btn_Test_Click"/>
+        <Button x:Name="btn_Play" Content="재생" HorizontalAlignment="Left" Height="100" Margin="120,50" VerticalAlignment="Top" Width="100" Click="btn_Play_Click"/>
+        <Button x:Name="btn_Quit" Content="나가기" HorizontalAlignment="Left" Height="100" Margin="235,50,0,0" VerticalAlignment="Top" Width="100" Click="btn_Quit_Click"/>
     </Grid>
 </Window>

@@ -1,0 +1,76 @@
+﻿<Window x:Class="EyeTracking.AnalysisWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EyeTracking"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        WindowState="Maximized"
+        ResizeMode="NoResize"
+        Title="AnalysisWindow" Height="450" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="메뉴">
+                <MenuItem Header="_메인으로" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.Resources>
+                <local:BooleanReverseConverter x:Key="BooleanReverseConverter"/>
+                <local:BooleanToBtnStringConverter x:Key="BooleanToBtnStringConverter"/>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="500"/>
+            </Grid.ColumnDefinitions>
+            <Grid x:Name="grid_Camera">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
+                    <Image x:Name="img_Face" Stretch="Fill"/>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="0" Background="Red">
+                    <Image x:Name="img_LeftEye" Stretch="Fill"/>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Background="Red">
+                    <Image x:Name="img_RightEye" Stretch="Fill"/>
+                </Border>
+            </Grid>
+            <Grid x:Name="grid_Control" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="btn_Start" Content="{Binding bStart,Converter={StaticResource BooleanToBtnStringConverter},Mode=OneWay}" Grid.Row="0" Margin="5" Click="btn_Start_Click"/>
+                <GroupBox x:Name="gb_Context" Grid.Row="1" Header="Context" FontSize="16" Margin="10,0,10,10">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="이름"/>
+                            <TextBox x:Name="tb_Name" Text="{Binding name}" Grid.Column="2" IsEnabled="{Binding bStart,Converter={StaticResource BooleanReverseConverter},Mode=OneWay}"/>
+
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="동공 간 거리"/>
+                            <TextBlock x:Name="tb_Distance" Grid.Column="2" Text="{Binding pupil_distance}"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
