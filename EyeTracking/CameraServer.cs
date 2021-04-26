@@ -79,13 +79,11 @@ namespace EyeTracking
             catch(SocketException err)
             {
                 Trace.WriteLine(string.Format("Socket Exception : {0}",err.Message));
+                Cameras.Remove(client);
             }
             catch(Exception err)
             {
                 Trace.WriteLine(string.Format("Exception : {0}", err.Message));
-            }
-            finally
-            {
                 Cameras.Remove(client);
             }
         }
