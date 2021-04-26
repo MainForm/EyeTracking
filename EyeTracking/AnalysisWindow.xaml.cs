@@ -51,6 +51,8 @@ namespace EyeTracking
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
+            server.SendAll("Test");
+
             if(data.bStart == false)
             {
 
@@ -69,6 +71,10 @@ namespace EyeTracking
             this.Close();
         }
 
+        private void DockPanel_Unloaded(object sender, RoutedEventArgs e)
+        {
+            server.Close();
+        }
     }
 
     public class AnalysisData : INotifyPropertyChanged

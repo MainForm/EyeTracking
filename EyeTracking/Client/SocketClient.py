@@ -16,17 +16,25 @@ class SocketClient(metaclass=abc.ABCMeta):
         self.client_socket.close()
     
     def connect(self,IP, port):
-        self.IP = IP
-        self.port = port
 
-        self.client_socket.connect((IP,port))
+        try:
+            self.IP = IP
+            self.port = port
 
-        self.td_receiving = threading.Thread(target=self.receivingData)
-        self.td_receiving.daemon =True
-        self.td_receiving.start()
+            self.client_socket.connect((IP,port))
 
-        self.ConnectedServer(self.client_socket)
-        self.isConnceted = True
+            self.td_receiving = threading.Thread(target=self.receivingData)
+            self.td_receiving.daemon =True
+            self.td_receiving.start()
+
+            self.ConnectedServer(self.client_socket)
+            self.isConnceted = True
+        except socket.error as e:
+            print('socket.error is occured in connect() : ',e)
+            self.disconnect()
+        except Exception as e:
+            print('Exception is occured in connect() : ',e)
+            self.disconnect()
 
     def disconnect(self):
         self.isConnceted = False
@@ -46,19 +54,23 @@ class SocketClient(metaclass=abc.ABCMeta):
 
             except socket.error as e:
                 print('socket.error is occured in receivingData() : ',e)
+                self.disconnect()
+                break
             except Exception as e:
                 print('Exception is occured in receivingData() : ',e)
+                self.disconnect()
+                break
             
     #이벤트
 
     #데이터를 입력 받을 때
-    def RecvData(self,client,data):
+    def RecvData(self,client : socket.socket,data):
         pass
 
     #Client가 접속했을 때
-    def ConnectedServer(self,client):
+    def ConnectedServer(self,client: socket.socket):
         pass
 
     #Client가 접속을 끊겼을 때
-    def DisconnectedServer(self,client):
+    def DisconnectedServer(self,client: socket.socket):
         pass

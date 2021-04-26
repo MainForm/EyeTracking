@@ -9,7 +9,7 @@
         WindowState="Maximized"
         ResizeMode="NoResize"
         Title="AnalysisWindow" Height="450" Width="800">
-    <DockPanel>
+    <DockPanel Unloaded="DockPanel_Unloaded">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="메뉴">
                 <MenuItem Header="_메인으로" Click="MenuItem_Click"/>
