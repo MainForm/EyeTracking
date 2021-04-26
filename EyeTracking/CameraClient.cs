@@ -19,6 +19,28 @@ namespace EyeTracking
 {
     class CameraClient
     {
+        Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+        public bool Connected
+        {
+            get { return client.Connected; }
+        }
+
+        public CameraClient()
+        {
+
+        }
+
+        public void Connect(string IP,int port)
+        {
+            client.Connect(new IPEndPoint(IPAddress.Parse(IP),port));
+        }
+
+        public Mat GetFrame()
+        {
+            SendString(client, "frame");
+            return RecvImage(client);
+        }
 
         private void SendInt(Socket sock, int number)
         {

@@ -1,46 +1,41 @@
-from SocketClient import *
+from SocketServer import SocketServer
 from SocketFunc import *
-import sys
 
 import socket
 import cv2
 
-class ControlCamera(SocketClient):
-    def __init__(self):
-        super().__init__()
+class ControlCamera(SocketServer):
+    def __init__(self,addr) -> None:
+        super().__init__(addr)
         self.camera = cv2.VideoCapture()
 
     def __del__(self):
         self.camera.release()
         return super().__del__()
 
-    def CameraOpen(self,idx :int):
+    def CameraOpen(self,idx : int):
         return self.camera.open(idx)
 
-    def RecvData(self,client : socket.socket,data : str):
-        print(data,' command is received')
+    #데이터를 입력 받을 때
+    def RecvData(self,client,data):
         if data == 'frame':
             ret, frame = self.camera.read()
-
-            if ret == True:
-                sendImage(client,frame)
+            sendImage(client[0],frame)
 
 try:
     if __name__ == '__main__':
-        client = ControlCamera()
+        server = ControlCamera(("",8456))
         
-        client.connect('127.0.0.1',8456)
-        client.CameraOpen(int(sys.argv[1]))
-        #client.CameraOpen(0)
+        server.CameraOpen(0)
+        server.BeginAccepting()
 
-        while client.isConnceted:
+        while True:
             key = input('command : ')
+
             if key == 'q':
                 break
-            
-            if key == 'status':
-                print(client.isConnceted)
-        
+                
+            if key == '1':
+                server.ShowAllClients()
 finally:
-    client.camera.release()
-    client.disconnect()
+    server.__del__()

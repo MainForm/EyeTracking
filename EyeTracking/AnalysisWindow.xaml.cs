@@ -32,6 +32,8 @@ namespace EyeTracking
             bStart = false
         };
 
+        CameraClient cap_Face = new CameraClient();
+        Thread td_recvFrame;
 
         public AnalysisWindow()
         {
@@ -39,6 +41,7 @@ namespace EyeTracking
 
             grid_Control.DataContext = data;
 
+            cap_Face.Connect("127.0.0.1", 8456);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -55,14 +58,35 @@ namespace EyeTracking
 
             if (data.bStart == false)
             {
-
-
                 data.bStart = true;
+
+                td_recvFrame = new Thread(ThreadFunc_RecvFrame);
+                td_recvFrame.IsBackground = true;
+                td_recvFrame.Start();
             }
             else
             {
-
                 data.bStart = false;
+
+            }
+        }
+
+        private void ThreadFunc_RecvFrame()
+        {
+            try
+            {
+                while (data.bStart)
+                {
+                    Dispatcher.Invoke((Action)(() =>
+                    {
+                        img_Face.Source = BitmapSourceConverter.ToBitmapSource(cap_Face.GetFrame());
+                    }));
+                    Cv2.WaitKey(16);
+                }
+            }
+            catch(Exception err)
+            {
+
             }
         }
 
