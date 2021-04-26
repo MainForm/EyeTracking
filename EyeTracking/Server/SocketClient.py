@@ -22,13 +22,13 @@ class SocketClient(metaclass=abc.ABCMeta):
             self.port = port
 
             self.client_socket.connect((IP,port))
+            self.isConnceted = True
 
             self.td_receiving = threading.Thread(target=self.receivingData)
             self.td_receiving.daemon =True
             self.td_receiving.start()
 
             self.ConnectedServer(self.client_socket)
-            self.isConnceted = True
         except socket.error as e:
             print('socket.error is occured in connect() : ',e)
             self.disconnect()
@@ -42,29 +42,28 @@ class SocketClient(metaclass=abc.ABCMeta):
         self.client_socket.close()
 
     def receivingData(self):
-        while self.isConnceted:
-            try:
+        try:
+            while self.isConnceted:
                 cmd = recvString(self.client_socket)
 
-                if len(cmd) == 0:
+                if cmd is None or len(cmd) == 0:
                     self.disconnect()
                     break
 
                 self.RecvData(self.client_socket,cmd)
 
-            except socket.error as e:
-                print('socket.error is occured in receivingData() : ',e)
-                self.disconnect()
-                break
-            except Exception as e:
-                print('Exception is occured in receivingData() : ',e)
-                self.disconnect()
-                break
+        except socket.error as e:
+            print('socket.error is occured in receivingData() : ',e)
+            self.disconnect()
+        except Exception as e:
+            print('Exception is occured in receivingData() : ',e)
+            self.disconnect()
+
             
     #이벤트
 
     #데이터를 입력 받을 때
-    def RecvData(self,client : socket.socket,data):
+    def RecvData(self,client : socket.socket,data : str):
         pass
 
     #Client가 접속했을 때

@@ -16,6 +16,9 @@ using System.Net.Sockets;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using System.ComponentModel;
+using System.Diagnostics;
+
+using System.Threading;
 
 namespace EyeTracking
 {
@@ -29,7 +32,6 @@ namespace EyeTracking
             bStart = false
         };
 
-        CameraServer server = new CameraServer("", 8456);
 
         public AnalysisWindow()
         {
@@ -37,7 +39,6 @@ namespace EyeTracking
 
             grid_Control.DataContext = data;
 
-            server.BeginAccepting();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -51,9 +52,8 @@ namespace EyeTracking
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
-            server.SendAll("Test");
 
-            if(data.bStart == false)
+            if (data.bStart == false)
             {
 
 
@@ -73,7 +73,7 @@ namespace EyeTracking
 
         private void DockPanel_Unloaded(object sender, RoutedEventArgs e)
         {
-            server.Close();
+
         }
     }
 
