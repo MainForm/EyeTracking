@@ -24,9 +24,17 @@ namespace EyeTracking
     /// </summary>
     public partial class AnalysisWindow : System.Windows.Window
     {
+        AnalysisData data = new AnalysisData()
+        {
+            bStart = false
+        };
+
         public AnalysisWindow()
         {
             InitializeComponent();
+
+            grid_Control.DataContext = data;
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,7 +48,17 @@ namespace EyeTracking
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
         {
+            if(data.bStart == false)
+            {
 
+
+                data.bStart = true;
+            }
+            else
+            {
+
+                data.bStart = false;
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -48,6 +66,48 @@ namespace EyeTracking
             this.Close();
         }
 
+    }
 
+    public class AnalysisData : INotifyPropertyChanged
+    {
+        public string name { get; set; }
+
+        int dist;
+        public int pupil_distance
+        {
+            get
+            {
+                return dist;
+            }
+            set
+            {
+                dist = value;
+                NotifyPropertyChanged("pupil_distance");
+            }
+        }
+
+        private bool pbStart = false;
+        public bool bStart
+        {
+            get
+            {
+                return pbStart;
+            }
+            set
+            {
+                pbStart = value;
+                NotifyPropertyChanged("bStart");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
+        }
     }
 }
