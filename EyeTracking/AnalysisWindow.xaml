@@ -68,6 +68,9 @@
                             <TextBlock Text="동공 간 거리"/>
                             <TextBlock x:Name="tb_Distance" Grid.Column="2" Text="{Binding pupil_distance}"/>
                         </Grid>
+                        <Grid>
+                            <TextBlock Text="테스트"/>
+                        </Grid>
                     </StackPanel>
                 </GroupBox>
             </Grid>

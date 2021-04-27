@@ -20,7 +20,11 @@ class ControlCamera(SocketServer):
     def RecvData(self,client,data):
         if data == 'frame':
             ret, frame = self.camera.read()
-            sendImage(client[0],frame)
+            dst = self.Algorithm(frame)
+            sendImage(client[0],dst)
+
+    def Algorithm(self,frame):
+        return frame
 
 try:
     if __name__ == '__main__':

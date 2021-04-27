@@ -46,10 +46,8 @@ class SocketServer(metaclass=abc.ABCMeta):
         호출 용도 X
         '''
         while True:
-
-            client = self.server_socket.accept()
-
             self.sem_Clients.acquire()  #세마포어 진입
+            client = self.server_socket.accept()
 
             self.AcceptedClient(client) #이벤트 발생
 

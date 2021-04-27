@@ -97,7 +97,7 @@ namespace EyeTracking
 
         private void DockPanel_Unloaded(object sender, RoutedEventArgs e)
         {
-
+            cap_Face.Close();
         }
     }
 

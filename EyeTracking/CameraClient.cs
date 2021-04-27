@@ -42,6 +42,11 @@ namespace EyeTracking
             return RecvImage(client);
         }
 
+        public void Close() {
+            if (this.client.Connected)
+                this.client.Close();
+        }
+
         private void SendInt(Socket sock, int number)
         {
             sock.Send(UTF8Encoding.UTF8.GetBytes(number.ToString() + '\0'));
