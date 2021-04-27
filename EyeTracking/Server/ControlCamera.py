@@ -20,8 +20,8 @@ class ControlCamera(SocketServer):
     def RecvData(self,client,data):
         if data == 'frame':
             ret, frame = self.camera.read()
-            dst = self.Algorithm(frame)
-            sendImage(client[0],dst)
+            #dst = self.Algorithm(frame)
+            sendImage(client[0],frame)
 
     def Algorithm(self,frame):
         return frame

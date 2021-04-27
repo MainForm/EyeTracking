@@ -6,7 +6,7 @@ from SocketFunc import *
 
 class SocketServer(metaclass=abc.ABCMeta):
     #모든 자식클래스에서 공유하는 세마포어
-    sem_Clients = threading.Semaphore(1)  
+    sem_Clients = threading.Semaphore(2)  
 
     #생성자
     def __init__(self,addr):
@@ -47,8 +47,9 @@ class SocketServer(metaclass=abc.ABCMeta):
         '''
         while True:
             self.sem_Clients.acquire()  #세마포어 진입
-            client = self.server_socket.accept()
 
+            client = self.server_socket.accept()
+            
             self.AcceptedClient(client) #이벤트 발생
 
             self.clients[client[1]] = client[0] #딕셔너리에 등록
