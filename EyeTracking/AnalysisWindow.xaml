@@ -22,7 +22,7 @@
             </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="grid_Camera">
                 <Grid.RowDefinitions>

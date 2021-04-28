@@ -42,15 +42,10 @@ namespace EyeTracking
             grid_Control.DataContext = data;
 
             cap_Face.Connect("127.0.0.1", 8456);
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string propName)
-        {
-            if (this.PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            td_recvFrame = new Thread(ThreadFunc_RecvFrame);
+            td_recvFrame.IsBackground = true;
+            td_recvFrame.Start();
         }
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
@@ -59,10 +54,6 @@ namespace EyeTracking
             if (data.bStart == false)
             {
                 data.bStart = true;
-
-                td_recvFrame = new Thread(ThreadFunc_RecvFrame);
-                td_recvFrame.IsBackground = true;
-                td_recvFrame.Start();
             }
             else
             {
@@ -75,7 +66,7 @@ namespace EyeTracking
         {
             try
             {
-                while (data.bStart)
+                while (cap_Face.Connected)
                 {
                     Dispatcher.Invoke((Action)(() =>
                     {
@@ -98,6 +89,16 @@ namespace EyeTracking
         private void DockPanel_Unloaded(object sender, RoutedEventArgs e)
         {
             cap_Face.Close();
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propName)
+        {
+            if (this.PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            }
         }
     }
 
