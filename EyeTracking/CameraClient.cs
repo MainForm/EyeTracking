@@ -21,7 +21,7 @@ namespace EyeTracking
     {
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-        public bool Connected
+        public bool isConnected
         {
             get { return client.Connected; }
         }

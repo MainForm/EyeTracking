@@ -13,8 +13,11 @@ class ControlCamera(SocketServer):
         self.camera.release()
         return super().__del__()
 
-    def CameraOpen(self,idx : int):
+    def OpenCamera(self,idx : int):
         return self.camera.open(idx)
+    
+    def ReleaseCamera(self):
+        return self.camera.release()
 
     #데이터를 입력 받을 때
     def RecvData(self,client,data):
@@ -30,7 +33,7 @@ try:
     if __name__ == '__main__':
         server = ControlCamera(("",8456))
         
-        server.CameraOpen(0)
+        server.OpenCamera(0)
         server.BeginAccepting()
 
         print('camera status : ',server.camera.isOpened())

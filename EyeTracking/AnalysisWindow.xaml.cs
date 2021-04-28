@@ -66,7 +66,7 @@ namespace EyeTracking
         {
             try
             {
-                while (cap_Face.Connected)
+                while (cap_Face.isConnected)
                 {
                     Dispatcher.Invoke((Action)(() =>
                     {
