@@ -14,6 +14,7 @@ class ControlCamera(SocketServer):
         return super().__del__()
 
     def OpenCamera(self,idx : int):
+        self.idx = idx
         return self.camera.open(idx)
     
     def ReleaseCamera(self):
@@ -22,31 +23,17 @@ class ControlCamera(SocketServer):
     #데이터를 입력 받을 때
     def RecvData(self,client,data):
         if data == 'frame':
+            # try:
+            #     max = self.camera.get(cv2.CAP_PROP_FRAME_COUNT)
+            #     nPos = self.camera.get(cv2.CAP_PROP_POS_FRAMES)
+            #     if max == nPos:
+            #         self.camera.open(self.idx)
+            # except:
+            #     pass
             ret, frame = self.camera.read()
-            #dst = self.Algorithm(frame)
-            sendImage(client[0],frame)
+
+            dst = self.Algorithm(frame)
+            sendImage(client[0],dst)
 
     def Algorithm(self,frame):
         return frame
-
-try:
-    if __name__ == '__main__':
-        server = ControlCamera(("",8456))
-        
-        server.OpenCamera(0)
-        server.BeginAccepting()
-
-        print('camera status : ',server.camera.isOpened())
-
-        while True:
-            key = input('command : ')
-
-            if key == 'q':
-                break
-                
-            if key == '1':
-                server.ShowAllClients()
-            elif key == '2':
-                print('camera status : ',server.camera.isOpened())
-finally:
-    server.__del__()

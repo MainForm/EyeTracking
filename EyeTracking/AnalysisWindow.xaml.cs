@@ -33,6 +33,9 @@ namespace EyeTracking
         };
 
         CameraClient cap_Face = new CameraClient();
+        CameraClient cap_LeftEye = new CameraClient();
+        CameraClient cap_RightEye = new CameraClient();
+
         Thread td_recvFrame;
 
         public AnalysisWindow()
@@ -42,6 +45,8 @@ namespace EyeTracking
             grid_Control.DataContext = data;
 
             cap_Face.Connect("127.0.0.1", 8456);
+            cap_LeftEye.Connect("127.0.0.1", 8457);
+            cap_RightEye.Connect("127.0.0.1", 8458);
 
             td_recvFrame = new Thread(ThreadFunc_RecvFrame);
             td_recvFrame.IsBackground = true;
@@ -71,6 +76,8 @@ namespace EyeTracking
                     Dispatcher.Invoke((Action)(() =>
                     {
                         img_Face.Source = BitmapSourceConverter.ToBitmapSource(cap_Face.GetFrame());
+                        img_LeftEye.Source = BitmapSourceConverter.ToBitmapSource(cap_LeftEye.GetFrame());
+                        img_RightEye.Source = BitmapSourceConverter.ToBitmapSource(cap_RightEye.GetFrame());
                     }));
                     Cv2.WaitKey(16);
                 }

@@ -25,7 +25,7 @@ def GetCenterOfRetina(image):
             sumX += int(pt[0][0])
             sumY += int(pt[0][1])
     except:
-        return None
+        return img
 
     cv2.circle(img,(int(sumX / len_contours),int(sumY / len_contours)),20,(255,0,0),1)
 
