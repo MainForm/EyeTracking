@@ -23,6 +23,7 @@ class ControlCamera(SocketServer):
     #데이터를 입력 받을 때
     def RecvData(self,client,data):
         if data == 'frame':
+            ret, frame = self.camera.read()
             # try:
             #     max = self.camera.get(cv2.CAP_PROP_FRAME_COUNT)
             #     nPos = self.camera.get(cv2.CAP_PROP_POS_FRAMES)
@@ -30,8 +31,6 @@ class ControlCamera(SocketServer):
             #         self.camera.open(self.idx)
             # except:
             #     pass
-            ret, frame = self.camera.read()
-
             dst = self.Algorithm(frame)
             sendImage(client[0],dst)
 

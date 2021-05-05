@@ -21,58 +21,47 @@
                 <local:BooleanToBtnStringConverter x:Key="BooleanToBtnStringConverter"/>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
-            <Grid x:Name="grid_Camera">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="7*"/>
-                    <RowDefinition Height="3*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
-                    <Image x:Name="img_Face" Stretch="Fill"/>
-                </Border>
-                <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="0" Background="Red">
-                    <Image x:Name="img_LeftEye" Stretch="Fill"/>
-                </Border>
-                <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Background="Red">
-                    <Image x:Name="img_RightEye" Stretch="Fill"/>
+            <Grid>
+                <Border BorderBrush="Black" Background="Black" BorderThickness="1">
+
                 </Border>
             </Grid>
-            <Grid x:Name="grid_Control" Grid.Column="1">
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
                     <RowDefinition/>
+                    <RowDefinition Height="2.5*"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="btn_Start" Content="{Binding bStart,Converter={StaticResource BooleanToBtnStringConverter},Mode=OneWay}" Grid.Row="0" Margin="5" Click="btn_Start_Click"/>
-                <GroupBox x:Name="gb_Context" Grid.Row="1" Header="Context" FontSize="16" Margin="10,0,10,10">
-                    <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="이름"/>
-                            <TextBox x:Name="tb_Name" Text="{Binding name}" Grid.Column="2" IsEnabled="{Binding bStart,Converter={StaticResource BooleanReverseConverter},Mode=OneWay}"/>
-
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="동공 간 거리"/>
-                            <TextBlock x:Name="tb_Distance" Grid.Column="2" Text="{Binding pupil_distance}"/>
-                        </Grid>
-                        <Grid>
-                            <TextBlock Text="테스트"/>
-                        </Grid>
-                    </StackPanel>
-                </GroupBox>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="0" Grid.ColumnSpan="2" Background="Black">
+                        <Image x:Name="img_Face" Stretch="Fill"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="0" Background="Red">
+                        <Image x:Name="img_LeftEye" Stretch="Fill"/>
+                    </Border>
+                    <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Background="Red">
+                        <Image x:Name="img_RightEye" Stretch="Fill"/>
+                    </Border>
+                </Grid>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="Start" Content="시작" Margin="5"/>
+                    <GroupBox Grid.Row="1" Header="Context" FontSize="16" Margin="10,0,10,10">
+                    </GroupBox>
+                </Grid>
             </Grid>
         </Grid>
     </DockPanel>

@@ -42,15 +42,49 @@ namespace EyeTracking
         {
             InitializeComponent();
 
-            grid_Control.DataContext = data;
+            this.DataContext = data;
 
-            cap_Face.Connect("127.0.0.1", 8456);
-            cap_LeftEye.Connect("127.0.0.1", 8457);
-            cap_RightEye.Connect("127.0.0.1", 8458);
+            try
+            {
+                cap_Face.Connect("127.0.0.1", 8456);
+                cap_LeftEye.Connect("127.0.0.1", 8457);
+                cap_RightEye.Connect("127.0.0.1", 8458);
+            }
+            catch(SocketException err)
+            {
+                MessageBox.Show(err.Message);
+            }
+
+
+            cap_Face.ReceivedFrame += (object obj, EventArgs arg) =>
+            {
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    img_Face.Source = BitmapSourceConverter.ToBitmapSource((arg as FrameCallbackArg).frame);
+                }));
+            };
+
+            cap_LeftEye.ReceivedFrame += (object obj, EventArgs arg) =>
+            {
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    img_LeftEye.Source = BitmapSourceConverter.ToBitmapSource((arg as FrameCallbackArg).frame);
+                }));
+            };
+
+            cap_RightEye.ReceivedFrame += (object obj, EventArgs arg) =>
+            {
+                Dispatcher.Invoke((Action)(() =>
+                {
+                    img_RightEye.Source = BitmapSourceConverter.ToBitmapSource((arg as FrameCallbackArg).frame);
+                }));
+            };
+
 
             td_recvFrame = new Thread(ThreadFunc_RecvFrame);
             td_recvFrame.IsBackground = true;
             td_recvFrame.Start();
+
         }
 
         private void btn_Start_Click(object sender, RoutedEventArgs e)
@@ -63,7 +97,6 @@ namespace EyeTracking
             else
             {
                 data.bStart = false;
-
             }
         }
 
@@ -73,13 +106,12 @@ namespace EyeTracking
             {
                 while (cap_Face.isConnected)
                 {
-                    Dispatcher.Invoke((Action)(() =>
-                    {
-                        img_Face.Source = BitmapSourceConverter.ToBitmapSource(cap_Face.GetFrame());
-                        img_LeftEye.Source = BitmapSourceConverter.ToBitmapSource(cap_LeftEye.GetFrame());
-                        img_RightEye.Source = BitmapSourceConverter.ToBitmapSource(cap_RightEye.GetFrame());
-                    }));
-                    Cv2.WaitKey(16);
+
+                    cap_Face.GetFrame();
+                    cap_LeftEye.GetFrame();
+                    cap_RightEye.GetFrame();
+
+                    Cv2.WaitKey(15);
                 }
             }
             catch(Exception err)
@@ -87,7 +119,6 @@ namespace EyeTracking
 
             }
         }
-
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

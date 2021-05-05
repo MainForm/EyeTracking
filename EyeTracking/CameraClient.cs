@@ -10,6 +10,7 @@ using System.Threading;
 using System.Diagnostics;
 
 using System.Windows;
+using System.Threading;
 
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
@@ -17,10 +18,22 @@ using System.Linq;
 
 namespace EyeTracking
 {
+    class FrameCallbackArg : EventArgs 
+    {
+        public Mat frame;
+
+        public FrameCallbackArg(Mat frame)
+        {
+            this.frame = frame;
+        }
+    }
+
+
     class CameraClient
     {
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+        public event EventHandler ReceivedFrame;
+        
         public bool isConnected
         {
             get { return client.Connected; }
@@ -36,10 +49,17 @@ namespace EyeTracking
             client.Connect(new IPEndPoint(IPAddress.Parse(IP),port));
         }
 
-        public Mat GetFrame()
+        public void GetFrame()
         {
+            Thread td_RecvingFrame;
+
             SendString(client, "frame");
-            return RecvImage(client);
+            td_RecvingFrame = new Thread(()=> {
+                if(ReceivedFrame != null)
+                    ReceivedFrame(this,new FrameCallbackArg(RecvImage(client)));
+            });
+            td_RecvingFrame.IsBackground = true;
+            td_RecvingFrame.Start();
         }
 
         public void Close() {

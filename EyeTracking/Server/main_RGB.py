@@ -1,10 +1,10 @@
-from IRCamera import *
+from RGBCamera import *
 
 import sys
 
 try:
     if __name__ == '__main__':
-        server = ControlCamera(("",8456))
+        server = RGBCamera(("",8456))
         server.OpenCamera(0)
         server.BeginAccepting()
 
