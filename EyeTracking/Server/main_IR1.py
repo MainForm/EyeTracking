@@ -5,7 +5,7 @@ import sys
 try:
     if __name__ == '__main__':
         server = IRCamera(("",8457))
-        server.OpenCamera(2)
+        server.OpenCamera('테스트1.mp4')
         server.BeginAccepting()
 
         print('camera status : ',server.camera.isOpened())

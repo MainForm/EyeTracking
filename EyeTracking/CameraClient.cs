@@ -28,7 +28,6 @@ namespace EyeTracking
         }
     }
 
-
     class CameraClient
     {
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

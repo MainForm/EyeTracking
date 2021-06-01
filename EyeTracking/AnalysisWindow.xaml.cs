@@ -47,8 +47,8 @@ namespace EyeTracking
             try
             {
                 cap_Face.Connect("127.0.0.1", 8456);
-                cap_LeftEye.Connect("127.0.0.1", 8457);
-                cap_RightEye.Connect("127.0.0.1", 8458);
+                //cap_LeftEye.Connect("127.0.0.1", 8457);
+                //cap_RightEye.Connect("127.0.0.1", 8458);
             }
             catch(SocketException err)
             {
@@ -108,8 +108,8 @@ namespace EyeTracking
                 {
 
                     cap_Face.GetFrame();
-                    cap_LeftEye.GetFrame();
-                    cap_RightEye.GetFrame();
+                    //cap_LeftEye.GetFrame();
+                    //cap_RightEye.GetFrame();
 
                     Cv2.WaitKey(15);
                 }

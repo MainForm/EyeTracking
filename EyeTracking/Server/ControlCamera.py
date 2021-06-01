@@ -24,13 +24,13 @@ class ControlCamera(SocketServer):
     def RecvData(self,client,data):
         if data == 'frame':
             ret, frame = self.camera.read()
-            # try:
-            #     max = self.camera.get(cv2.CAP_PROP_FRAME_COUNT)
-            #     nPos = self.camera.get(cv2.CAP_PROP_POS_FRAMES)
-            #     if max == nPos:
-            #         self.camera.open(self.idx)
-            # except:
-            #     pass
+            try:
+                max = self.camera.get(cv2.CAP_PROP_FRAME_COUNT)
+                nPos = self.camera.get(cv2.CAP_PROP_POS_FRAMES)
+                if max == nPos:
+                    self.camera.open(self.idx)
+            except:
+                pass
             dst = self.Algorithm(frame)
             sendImage(client[0],dst)
 
