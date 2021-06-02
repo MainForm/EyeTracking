@@ -32,7 +32,23 @@ class ControlCamera(SocketServer):
             except:
                 pass
             dst = self.Algorithm(frame)
-            sendImage(client[0],dst)
+            self.SendCommand(data,2,[dst])
+
+    def SendCommand(self,cmd,type,data):
+        self.sem_sendData.acquire()
+        for client in self.clients.values():
+            sendString(client,cmd)
+            if type == 0:       #int
+                for d in data:
+                    sendInt(client,d)
+            elif type == 1:     #string
+                for d in data:
+                    sendString(client,d)
+            elif type == 2:     #image
+                for d in data:
+                    sendImage(client,d)
+        self.sem_sendData.release()
+            
 
     def Algorithm(self,frame):
         return frame

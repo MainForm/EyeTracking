@@ -5,8 +5,7 @@ import abc
 from SocketFunc import *
 
 class SocketServer(metaclass=abc.ABCMeta):
-    #모든 자식클래스에서 공유하는 세마포어
-    sem_Clients = threading.Semaphore(2)  
+    #모든 자식클래스에서 공유하는 세마포어 
 
     #생성자
     def __init__(self,addr):
@@ -17,7 +16,9 @@ class SocketServer(metaclass=abc.ABCMeta):
         self.server_socket.bind(addr)
 
         self.server_socket.listen()
-
+        self.sem_Clients = threading.Semaphore(1) 
+        self.sem_recvData = threading.Semaphore(1) 
+        self.sem_sendData = threading.Semaphore(1)
         '''
         key : addr
         value : (socket,addr)
@@ -46,12 +47,13 @@ class SocketServer(metaclass=abc.ABCMeta):
         호출 용도 X
         '''
         while True:
-            self.sem_Clients.acquire()  #세마포어 진입
 
             client = self.server_socket.accept()
-            
-            self.AcceptedClient(client) #이벤트 발생
 
+
+            self.AcceptedClient(client) #이벤트 발생
+            
+            self.sem_Clients.acquire()  #세마포어 진입
             self.clients[client[1]] = client[0] #딕셔너리에 등록
             #접속한 클라이언트만을 위한 쓰레드
             thread_recv = threading.Thread(target=self.RecvFromClient,args=(client[1],))
@@ -66,13 +68,13 @@ class SocketServer(metaclass=abc.ABCMeta):
         if addr in self.clients.keys():#만약 addr로 접속한 client가 있을 때에
             self.DisconnectedClient((self.clients[addr],addr))
             self.sem_Clients.acquire()
+            #self.clients[addr].close()
             del self.clients[addr]
             self.sem_Clients.release()
 
     def ShowAllClients(self):
         for key in self.clients:
             print(key)
-
 
     def RecvFromClient(self,addr):
         #각 클라이언트에서 데이터 수신 쓰레드
@@ -85,21 +87,15 @@ class SocketServer(metaclass=abc.ABCMeta):
                 recvData = recvString(self.clients[addr])
             except Exception: #접속 에러
                 self.DisconnectClient(addr)
-                bBreak = True
-            finally:
-                if bBreak != True and recvData is None or len(recvData) == 0:#클라이언트 연결 헤제
-                    self.DisconnectClient(addr)
-                    bBreak = True
+                break
 
-            #접속 에러시 명령어 실행 X
-            if bBreak == True:
-                break                    
+            if recvData == None:
+                break               
 
-            self.sem_Clients.acquire()  #세마포어 진입
-
+            self.sem_recvData.acquire()  #세마포어 진입
             self.RecvData((self.clients[addr],addr),recvData)
 
-            self.sem_Clients.release()  #세마포어 출구
+            self.sem_recvData.release()  #세마포어 출구
 
     #이벤트
 

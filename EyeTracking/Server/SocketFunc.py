@@ -42,7 +42,7 @@ def recvString(sock :socket.socket):
 
 	while True:
 		aByte = sock.recv(1)
-		if len(aByte) == 0:
+		if aByte is None:
 			return None
 		if aByte[0] == 0:
 			break

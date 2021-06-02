@@ -6,4 +6,4 @@ class IRCamera(ControlCamera):
         super().__init__(addr)
 
     def Algorithm(self, frame):
-        return GetCenterOfRetina(frame)
+        return frame

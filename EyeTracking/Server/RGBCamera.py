@@ -6,5 +6,4 @@ class RGBCamera(ControlCamera):
         super().__init__(addr)
 
     def Algorithm(self, frame):
-        cv2.waitKey(12)
         return frame
